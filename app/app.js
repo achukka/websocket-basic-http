@@ -1,10 +1,14 @@
-const socket = new WebSocket('ws://localhost:8080')
+// Create a socket
+const socket = io('ws://localhost:8080')
 
 // Listen for messages
-socket.onmessage = ({ data }) => {
-    console.log(`Message received from server: ${data}`)
-}
+socket.on('message', text => {    
+    const element = document.createElement('li')
+    element.innerText = text
+    document.getElementById("messages").appendChild(element)
+})
 
 document.querySelector('button').onclick = () => {
-    socket.send('Hello user')
+    const text = document.getElementById('messageinput').value
+    socket.emit('message', text)
 }
